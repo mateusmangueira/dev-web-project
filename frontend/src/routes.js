@@ -1,18 +1,18 @@
 import React from 'react';
 
-import {BrowserRouter, Switch, Route} from 'react-router-dom';
+import { Routes, Route, BrowserRouter } from 'react-router-dom';
 
 import Login from './pages/Login';
 import Register from './pages/Register';
 
 
-export default function Routes() {
+export default function Rotas() {
     return (
         <BrowserRouter>
-           <Switch>
-            <Route path="/" exact component={Login} />
-            <Route path="/register" component={Register} />
-            </Switch>
+            <Routes>
+                <Route path="/" element={<Login />} />
+                <Route path="/register" element={<Register />} />
+            </Routes>
         </BrowserRouter>
     );
 }
