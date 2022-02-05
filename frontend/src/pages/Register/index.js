@@ -1,28 +1,31 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom'
-import CustomButton from '../../components/CustomButton';
-import { Modal } from '../../components/Modal';
+import * as Yup from 'yup';
 
-import "./styles.css";
+import { Link } from 'react-router-dom'
+import { Form } from '@unform/web';
+import CustomButton from '../../components/CustomButton'
+import Input from '../../components/Input';
 
 export default function Register(props) {
 
-  const [showModal, setShowModal] = useState(false);
+  const schema = Yup.object().shape({
+    email: Yup.string().email('Insira um e-mail válido').required('O e-mail é obrigatório'),
+    password: Yup.string().required('A senha é obrigatória'),
+  });
 
-  function handleModal() {
-    setShowModal(!showModal);
+  function handleRegister({ email, password }) {
+    console.log("Registrou com sucesso!");
   }
 
   return (
     <div>
-      <Link to="/">Login</Link>
-      <hr></hr>
-      <CustomButton onClick={handleModal} text="Registrar">
-        <Modal show={showModal} handleClose={handleModal} >
-          <p>REGISTRAR</p>
-          <CustomButton type="submit" onClick={handleModal} text="Fechar" />
-        </Modal>
-      </CustomButton>
+      <Form class="form" schema={schema} onSubmit={handleRegister}>
+        <Input name="name" type="name" placeholder="Nome Completo" />
+        <Input name="email" type="email" placeholder="Email" />
+        <Input name="password" type="password" placeholder="Senha" />
+        <CustomButton text='Registrar' type="submit" />
+        <Link class="link" to="/">Já possui conta?</Link>
+      </Form>
     </div>
   )
 }

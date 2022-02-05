@@ -1,10 +1,8 @@
-import React from 'react';
-
 import { Button } from './styles';
 
-export default function CustomButton({text}) {
+export default function CustomButton({ text, ...rest }) {
   return (
-    <Button>
+    <Button {...rest} >
       {text}
     </Button>
   );
