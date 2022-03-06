@@ -1,45 +1,42 @@
-import { screen } from '@testing-library/react';
+/* eslint-disable testing-library/no-node-access */
+/* eslint-disable testing-library/no-unnecessary-act */
+import { unmountComponentAtNode, render } from "react-dom";
+import { act } from "react-dom/test-utils";
 import userEvent from '@testing-library/user-event';
+import "@testing-library/jest-dom/extend-expect"
 
-import { render, unmountComponentAtNode } from 'react-dom';
-
-import React from 'react';
-import Input from './index';
-import { BrowserRouter } from 'react-router-dom';
-import { act } from 'react-dom/test-utils';
+import Input from "../Input";
 
 let container = null;
-
 beforeEach(() => {
-   // setar o inout do DOM como elemento a ser testado
-  const input = document.createElement('input');
-  container = document.body.appendChild(input);
+  // Seta um componente da DOM para testes
+  container = document.createElement("div");
+  document.body.appendChild(container);
 });
 
 afterEach(() => {
-  // ao finalizar os testes reseta tudo
+  // Reseta ao finalizar os testes
   unmountComponentAtNode(container);
   container.remove();
   container = null;
 });
 
-describe('Base tests', () => {
-    test('input test', () => {
-      act(() => {
-        render(
-          <BrowserRouter>
-            <Input />
-          </BrowserRouter>,
-  
-          container
-        );
-      });
-  
-      const button = screen.getAllByTestId('delete-button')[0];
-      expect(button).toBeInTheDocument();
-      userEvent.click(button);
-      expect(window.confirm).toBeCalled();
+it("renders input", () => {
+    act(() => {
+        render(<Input />, container);
     });
+    expect(container.textContent).toBe("");
 
-  })
-})
+    act(() => {
+        render(<Input label="Mateus" />, container);
+    });
+    expect(container.textContent).toBe("Mateus");
+});
+
+it("change input value", () => {
+    act(() => {
+        render(<Input label="Mateus" />, container);
+    });
+    userEvent.type(container.querySelector('input'), "Mateus Mangueira");
+    expect(container.querySelector('input')).toHaveValue("Mateus Mangueira");
+});

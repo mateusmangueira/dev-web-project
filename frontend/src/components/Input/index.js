@@ -1,36 +1,14 @@
-import React, { useEffect, useRef } from 'react'
-import { useField } from '@unform/core'
+import { useState } from "react";
 
-const Input = ({ name, ...rest }) => {
+const Input = ({label}) => {
+    const [value, setValue] = useState('');
 
-  const { fieldName, registerField } = useField(name);
-
-  const inputRef = useRef();
-
-  useEffect(() => {
-    registerField({
-      name: fieldName,
-      ref: inputRef,
-      getValue: ref => {
-        return ref.current.value
-      },
-      setValue: (ref, value) => {
-        ref.current.value = value
-      },
-      clearValue: ref => {
-        ref.current.value = ''
-      },
-    })
-  }, [fieldName, registerField])
-
-  return (
-    <input
-      name={name}
-      ref={inputRef}
-      type="text"
-      placeholder="Type your username"
-      {...rest}
-    />
-  )
+    return (
+        <div>
+            <p>{label}</p>
+            <input type="text" value={value} onChange={e => setValue(e.target.value)} />
+        </div>
+    )
 }
-export default Input
+
+export default Input;
