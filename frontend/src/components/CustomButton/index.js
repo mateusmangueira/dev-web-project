@@ -1,8 +1,8 @@
 import { Button } from './styles';
 
-export default function CustomButton({ text, ...rest }) {
+export default function CustomButton({text, ...props}) {
   return (
-    <Button {...rest} >
+    <Button {...props}>
       {text}
     </Button>
   );
