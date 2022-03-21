@@ -1,17 +1,22 @@
-const User = require('../models/User');
+const Dev = require('../models/Dev');
+const parseStringAsArray = require('../utils/StringAsArray');
 
 module.exports = {
     async store(req, res) {
-       const {name, email, password} = req.body;
-       let user = await User.findOne({email})    
-        if(!user) {
-            user = await User.create({name, email, password});
+       const {name, email, password, techs} = req.body;
+
+       let dev = await Dev.findOne({email})
+
+       const techsArray = parseStringAsArray(techs);
+
+        if(!dev) {
+            dev = await Dev.create({name, email, password, techs: techsArray});
         }
-        return res.json(user);
+        return res.json(dev);
     },
 
     async index(req, res) {
-        const users = await User.find();
-        return res.json(users);
+        const devs = await Dev.find();
+        return res.json(devs);
     },
 }
