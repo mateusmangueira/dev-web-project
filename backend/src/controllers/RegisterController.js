@@ -1,4 +1,4 @@
-const Register = require('../models/Register');
+const Register = require("../models/Register");
 
 module.exports = {
   async store(req, res) {
@@ -12,8 +12,16 @@ module.exports = {
       date,
     });
 
-    await register.populate('freela').populate('dev').execPopulate();
+    await register.populate("freela").populate("dev").execPopulate();
+    const freela = await Freela.find({ _id: freela_id });
+
+    freela = {
+      ...rest,
+      registered_devs: registered_devs + 1,
+    };
+
+    await freela.save();
 
     return res.json(register);
-  }
+  },
 };

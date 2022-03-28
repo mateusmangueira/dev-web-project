@@ -6,7 +6,9 @@ import { Form } from "@unform/web";
 import CustomButton from "../../components/CustomButton";
 import Input from "../../components/Input";
 
-export default function Login(props) {
+import api from "../../services/api";
+
+export default function Login({ history }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -17,8 +19,13 @@ export default function Login(props) {
     password: Yup.string().required("A senha é obrigatória"),
   });
 
-  function handleLogin({ email, password }) {
-    console.log("Logou com sucesso!");
+  async function handleLogin({ email, password }) {
+    const response = await api.post("/login", { email, password });
+    const { _id } = response.data;
+
+    localStorage.setItem("dev", _id);
+
+    history.push("/dashboard");
   }
 
   return (

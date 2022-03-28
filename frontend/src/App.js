@@ -1,12 +1,10 @@
-import React from 'react';
-import Routes from './routes';
-import { NameContextProvider } from './utils/context/NameContext'
+import React from "react";
+import Routes from "./routes";
 
 function App() {
   return (
-    <div >
-        <Routes />
-        <NameContextProvider children={<App />}/>
+    <div>
+      <Routes />
     </div>
   );
 }
