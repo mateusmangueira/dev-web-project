@@ -1,43 +1,27 @@
 import React, { useState, useEffect } from "react";
+import { Link } from 'react-router-dom';
 
 import api from "../../services/api";
 
-export default function Dashboard() {
-  const [freelas, setFreelas] = useState([
-    {
-      id: 1,
-      photo: "",
-      company: "Teste 1",
-      pricePerHour: 150,
-    },
-    {
-      id: 2,
-      photo: "",
-      company: "Teste 2",
-      pricePerHour: 150,
-    },
-  ]);
-  const [requests, setRequests] = useState([
-    {
-      id: 1,
-      user: {
-        email: "mateus@gmail.com",
-      },
-      freela: {
-        company: "teste company",
-      },
-      date: "24/10/1995",
-    },
-  ]);
+import "./Dashboard.css";
 
-  const dev_id = localStorage.getItem("dev");
+export default function Dashboard() {
+  const [freelas, setFreelas] = useState([]);
+  const [requests, setRequests] = useState([]);
+
+  const dev_id = localStorage.getItem("dev_id")
 
   useEffect(() => {
     async function loadData() {
-      const dev_id = localStorage.getItem("dev");
-      const response = await api.get("/dashboard", {
-        headers: { dev_id },
-      });
+      const response = await api.get(`/dashboard/${dev_id}`);
+      setRequests(response.data);
+    }
+    loadData();
+  }, [dev_id]);
+
+  useEffect(() => {
+    async function loadData() {
+      const response = await api.get("/freelas/");
       setFreelas(response.data);
     }
     loadData();
@@ -52,37 +36,44 @@ export default function Dashboard() {
 
   return (
     <>
-      <ul className="notifications">
-        {requests.map((request) => (
+      <h1>Dashboard</h1>
+      <Link to='/profile'> Profile
+      </Link>
+
+      <ul className='notifications'>
+        {requests.map(request => (
           <li key={request._id}>
             <p>
-              <strong> {request.dev.email} </strong> está solicitando uma
-              reserva em <strong> {request.freela.company} </strong> para a
-              data: <strong>{request.date}</strong>
+              Voce têm uma reserva em <strong> {request.company} </strong>
             </p>
-            <button
-              className="accept"
-              onClick={() => handleAccept(request._id)}
-            >
-              ACEITAR
-            </button>
-            <button
-              className="reject"
-              onClick={() => handleReject(request._id)}
-            >
-              REJEITAR
-            </button>
           </li>
         ))}
       </ul>
-      <ul className="freela-list">
-        {freelas.map((freela) => (
+
+      <ul className='freela-list'>
+        {freelas.map(freela => (
           <li key={freela._id}>
             <strong>{freela.company}</strong>
-            <span>R${freela.pricePerHour}/hora</span>
+            <span>{`R$${JSON.stringify(freela.hour_price)}/hora`}</span>
+            <span>Devs registrados: {freela.registered_devs}</span>
           </li>
         ))}
       </ul>
     </>
   );
 }
+
+
+/*
+
+  <ul className='notifications'>
+        {requests.map(request => (
+          <li key={request._id}>
+            <p>
+              <strong> {request.dev.email} </strong> tem uma reserva em <strong> {request.freela.company} </strong> para a data: <strong>{request.date}</strong>
+            </p>
+          </li>
+        ))}
+      </ul>
+
+*/

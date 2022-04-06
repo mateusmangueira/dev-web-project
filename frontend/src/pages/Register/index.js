@@ -1,12 +1,17 @@
 import React, { useState } from "react";
 import * as Yup from "yup";
-
 import { Link } from "react-router-dom";
 import { Form } from "@unform/web";
 import CustomButton from "../../components/CustomButton";
 import Input from "../../components/Input";
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import api from "../../services/api";
 
-export default function Register(props) {
+export default function Register() {
+
+  const navigate = useNavigate();
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -20,8 +25,13 @@ export default function Register(props) {
     password: Yup.string().required("A senha é obrigatória"),
   });
 
-  function handleRegister({ email, password }) {
-    console.log("Registrou com sucesso!");
+  async function handleRegister({ name, email, password, techs }) {
+    const response = await api.post('/create', { name, email, password, techs });
+    const { dev, token } = response.data;
+    localStorage.setItem('dev_id', JSON.stringify(dev._id));
+    localStorage.setItem('token', JSON.stringify(token));
+    toast.success('Conta criada com sucesso.');
+    navigate('/');
   }
 
   return (
@@ -47,6 +57,13 @@ export default function Register(props) {
           placeholder="Senha"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+        />
+        <Input
+          name="techs"
+          type="techs"
+          placeholder="Tecnologias"
+          value={techs}
+          onChange={(e) => setTechs(e.target.value)}
         />
         <CustomButton text="Registrar" type="submit" />
         <Link class="link" to="/">

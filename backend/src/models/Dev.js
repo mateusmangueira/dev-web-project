@@ -1,4 +1,6 @@
 const { Schema, model } = require('mongoose');
+const bcrypt = require('bcryptjs');
+const SALT_WORK_FACTOR = 8;
 
 const DevSchema = new Schema({
   name: {
@@ -14,11 +16,10 @@ const DevSchema = new Schema({
     type: String,
     required: true
   },
+
   techs: [String],
-  avatar_url: {
-    type: String
-  },
-}
-);
+  registers: [String],
+});
+
 
 module.exports = model('Dev', DevSchema);
