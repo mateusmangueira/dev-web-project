@@ -49,7 +49,6 @@ export default function Dashboard() {
           </li>
         ))}
       </ul>
-
       <ul className='freela-list'>
         {freelas.map(freela => (
           <li key={freela._id}>
@@ -62,18 +61,3 @@ export default function Dashboard() {
     </>
   );
 }
-
-
-/*
-
-  <ul className='notifications'>
-        {requests.map(request => (
-          <li key={request._id}>
-            <p>
-              <strong> {request.dev.email} </strong> tem uma reserva em <strong> {request.freela.company} </strong> para a data: <strong>{request.date}</strong>
-            </p>
-          </li>
-        ))}
-      </ul>
-
-*/

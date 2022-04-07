@@ -26,7 +26,7 @@ export default function Register() {
   });
 
   async function handleRegister({ name, email, password, techs }) {
-    const response = await api.post('/create', { name, email, password, techs });
+    const response = await api.post('/signup', { name, email, password, techs });
     const { dev, token } = response.data;
     localStorage.setItem('dev_id', JSON.stringify(dev._id));
     localStorage.setItem('token', JSON.stringify(token));
